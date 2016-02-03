@@ -1,0 +1,32 @@
+//дописать к другим библиотекам
+using System.Net;
+using System.IO;
+using System.Text.RegularExpressions;
+// саму процедуру создаете двойім кликом 
+  private void button1_Click(object sender, EventArgs e)
+        {
+            try // использ для обраб ошибки, чтоб прога не вываливалась с ошибкой
+            {
+                string html0 = "";
+                WebRequest request = WebRequest.Create(new Uri(@"http://edis.pp.ua/project+/button/index.php?date_req=" + DateTime.Now.ToString("dd.MM.yyyy")));
+                // Получить ответ с сервера
+                WebResponse response = request.GetResponse();
+
+                // Получаем поток данных из ответа
+                using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+                {
+                    // Выводим исходный код страницы
+                    string line;
+                    while ((line = stream.ReadLine()) != null)
+                        html0 += line + "\n";
+                }
+// малой кровью парсим товарищи, при желании можно сложнее
+                //выбираем значение            
+                string match = Regex.Match(html0, @"значение.*?лампочки").ToString();
+                //вынимаем чсло
+                match = Regex.Match(match, @"[0-9]").ToString();
+                textBox1.Text = match;
+            }
+            catch { // если ошибка просто молчим
+} 
+                    }
